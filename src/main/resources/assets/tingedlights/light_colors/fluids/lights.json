@@ -1,0 +1,13 @@
+{
+  "types": {
+    "lava": {
+      "color": [223, 127, 40]
+    }
+  },
+  "lights": {
+    "minecraft:lava": {
+      "type": "lava",
+      "brightness": -1
+    }
+  }
+}

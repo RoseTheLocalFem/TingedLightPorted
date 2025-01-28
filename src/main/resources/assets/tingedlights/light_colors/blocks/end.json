@@ -1,0 +1,36 @@
+{
+  "types": {
+    "white": {
+      "color": [255, 255, 255]
+    },
+    "dimish": {
+      "color": [249, 245, 252]
+    }
+  },
+  "lights": {
+    "minecraft:end_gateway": {
+      "type": "white",
+      "brightness": -1
+    },
+    "minecraft:end_rod": {
+      "type": "white",
+      "brightness": -1
+    },
+    "minecraft:end_portal": {
+      "type": "white",
+      "brightness": -1
+    },
+    "minecraft:ender_chest": {
+      "type": "dimish",
+      "brightness": -1
+    },
+    "minecraft:end_portal_frame": {
+      "type": "white",
+      "brightness": -1
+    },
+    "minecraft:dragon_egg": {
+      "type": "white",
+      "brightness": -1
+    }
+  }
+}
