@@ -34,10 +34,10 @@ public class AOFace {
 	int[] skylight = null;
 	
 	private static final int[][] MAPPINGS = new int[][]{
+			new int[]{1, 3},
 			new int[]{0, 3},
 			new int[]{0, 2},
-			new int[]{1, 2},
-			new int[]{1, 3}
+			new int[]{1, 2}
 	};
 	private static final int COUNT = 4;
 	

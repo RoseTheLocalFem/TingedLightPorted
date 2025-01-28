@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientboundSectionBlocksUpdatePacket.class)
 public class SectionChangedPacketMixin {
-	@Inject(at = @At("HEAD"), method = "shouldSuppressLightUpdates", cancellable = true)
-	public void preCheckSuppressLight(CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue(false);
-	}
+//	@Inject(at = @At("HEAD"), method = "shouldSuppressLightUpdates", cancellable = true)
+//	public void preCheckSuppressLight(CallbackInfoReturnable<Boolean> cir) {
+//		cir.setReturnValue(false);
+//	}
 }

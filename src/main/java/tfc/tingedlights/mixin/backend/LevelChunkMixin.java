@@ -87,7 +87,7 @@ public abstract class LevelChunkMixin implements IHoldColoredLights {
 				sectY += 16;
 				continue;
 			}
-			int sectionY = lvlChunk.getSectionIndexFromSectionY(sectY);
+			int sectionY = lvlChunk.getSectionIndex(sectY);
 
 			newSources[sectionY] = new HashSet<>();
 			if (section.hasOnlyAir()) continue;
@@ -125,6 +125,8 @@ public abstract class LevelChunkMixin implements IHoldColoredLights {
 			}
 
 			sources[sectionY] = newSources[sectionY];
+
+			sectY += 16;
 		}
 
 		OnThread.runOnMainThread(

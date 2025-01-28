@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraftforge.client.model.IQuadTransformer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -299,19 +300,11 @@ public class BlockTesselator {
 	}
 
 	public static int applyBakedLighting(int packedLight, ByteBuffer data) {
-		int blockLight = (packedLight >> 4) & 0xF; // Extract block light (vanilla format)
-		int skyLight = (packedLight >> 20) & 0xF; // Extract sky light (vanilla format)
-
-		// Offset calculation for vertex 0 in the baked model
-		int offset = 0; // Assuming vertex 0 starts at 0, adjust as needed
-		int bakedBlockLight = data.get(offset) & 0xF; // Extract baked block light
-		int bakedSkyLight = (data.get(offset + 1) >> 4) & 0xF; // Extract baked sky light
-
-		// Combine the maximum values
-		blockLight = Math.max(blockLight, bakedBlockLight);
-		skyLight = Math.max(skyLight, bakedSkyLight);
-
-		return LightTexture.pack(blockLight, skyLight);
+		int sl = (packedLight >> 16) & 0xFFFF;
+		int offset = IQuadTransformer.UV2 * 4;
+		int slBaked = (data.get(offset + 1) >> 4) & 0xF;
+		sl = Math.max(sl, slBaked);
+		return sl << 16;
 	}
 
 	// copy of forge code, allows a small memory optimization as well as preventing repeated matrix math

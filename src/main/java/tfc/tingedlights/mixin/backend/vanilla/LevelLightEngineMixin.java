@@ -97,14 +97,13 @@ public class LevelLightEngineMixin implements ColoredLightEngine {
 			if (enginesArray.length != totalEngines)
 				enginesArray = engines.entrySet().toArray(new Map.Entry[0]);
 			
-			int v = Integer.MAX_VALUE;
+			int v = 0;
 			for (int i1 = 0; i1 < 10; i1++) { // this shouldn't really be able to fail more than once in a row
 				try {
 					BlockLightEngine[] collection = engines.values().toArray(new BlockLightEngine[0]);
 					
 					for (BlockLightEngine value : collection) {
-						if (v == 0) return;
-						v -= v - value.runLightUpdates();
+						v += value.runLightUpdates();
 					}
 					
 					return;

@@ -24,7 +24,7 @@ public class FluidRendererMixin {
 	@Inject(at = @At("HEAD"), method = "tesselate")
 	public void preDraw(BlockAndTintGetter p_234370_, BlockPos p_234371_, VertexConsumer p_234372_, BlockState p_234373_, FluidState p_234374_, CallbackInfo ci) {
 		TesselationState.guiLighting.set(false);
-		this.p_203176_.set((VertexConsumer) p_203176_);
+		this.p_203176_.set(p_234372_);
 	}
 	
 	@Inject(at = @At("TAIL"), method = "tesselate")
