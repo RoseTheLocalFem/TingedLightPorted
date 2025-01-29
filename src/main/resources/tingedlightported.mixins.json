@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "tfc.tingedlights.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "tingedlights.refmap.json",
+  "refmap": "tingedlightported.refmap.json",
   "plugin": "tfc.tingedlights.util.MixinConnector",
   "mixins": [
   ],

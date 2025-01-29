@@ -27,7 +27,7 @@ import java.util.BitSet;
 import java.util.List;
 
 // TODO: move off overwrites?
-@Mixin(ModelBlockRenderer.class)
+@Mixin(value = ModelBlockRenderer.class, priority = 999)
 public abstract class BlockRendererMixin {
 	@Shadow
 	@Final
