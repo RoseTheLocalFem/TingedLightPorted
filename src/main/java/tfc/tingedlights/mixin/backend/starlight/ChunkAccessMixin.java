@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.mixin.backend.starlight;
+package tfc.tingedlights.mixin.backend.starlight;
 
 import ca.spottedleaf.starlight.common.light.SWMRNibbleArray;
 import ca.spottedleaf.starlight.common.light.StarLightEngine;
@@ -64,4 +64,3 @@ public class ChunkAccessMixin implements ColorExtendedChunk {
 		throw new RuntimeException();
 	}
 }
-*/

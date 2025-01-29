@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.util.starlight;
+package tfc.tingedlights.util.starlight;
 
 import ca.spottedleaf.starlight.common.light.BlockStarLightEngine;
 import net.minecraft.core.BlockPos;
@@ -46,4 +46,3 @@ public class DummyLightInterface {
 	public void propagateChanges() {
 	}
 }
-*/

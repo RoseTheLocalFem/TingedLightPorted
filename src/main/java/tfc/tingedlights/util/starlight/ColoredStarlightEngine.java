@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.util.starlight;
+package tfc.tingedlights.util.starlight;
 
 import ca.spottedleaf.starlight.common.light.SWMRNibbleArray;
 import com.mojang.datafixers.util.Pair;
@@ -72,4 +72,3 @@ public class ColoredStarlightEngine extends DummyBlockEngine implements OutOfLin
 		return set.iterator();
 	}
 }
-*/

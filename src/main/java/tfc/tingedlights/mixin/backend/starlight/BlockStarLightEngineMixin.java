@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.mixin.backend.starlight;
+package tfc.tingedlights.mixin.backend.starlight;
 
 import ca.spottedleaf.starlight.common.light.BlockStarLightEngine;
 import net.minecraft.core.BlockPos;
@@ -51,4 +51,3 @@ public class BlockStarLightEngineMixin implements OutOfLineLightGetter {
 		return TingedLights$getLight(instance, null, null);
 	}
 }
-*/

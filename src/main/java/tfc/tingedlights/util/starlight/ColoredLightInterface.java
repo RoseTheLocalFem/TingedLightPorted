@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.util.starlight;
+package tfc.tingedlights.util.starlight;
 
 import ca.spottedleaf.starlight.common.chunk.ExtendedChunk;
 import ca.spottedleaf.starlight.common.light.BlockStarLightEngine;
@@ -28,41 +28,41 @@ public class ColoredLightInterface extends DummyLightInterface implements OutOfL
 	Light type;
 	BlockGetter level;
 	LightChunkGetter chunkSource;
-	
+
 	Pair<ChunkPos, SWMRNibbleArray[]> prev = null;
-	
+
 	@Override
 	public SWMRNibbleArray[] TingedLights$getBlockNibbles(ExtendedChunk chunk) {
 		ChunkPos pos = ((ChunkAccess) chunk).getPos();
-		
+
 		Pair<ChunkPos, SWMRNibbleArray[]> prev = this.prev;
-		
+
 		SWMRNibbleArray[] nibble;
 		if (prev == null || !prev.getFirst().equals(pos))
 			this.prev = new Pair<>(pos, nibble = ((ColorExtendedChunk) chunk).getBlockNibbles(type));
 		else nibble = prev.getSecond();
-		
+
 		return nibble;
 	}
-	
+
 	@Override
 	public int TingedLights$getLight(BlockState state, BlockGetter level, BlockPos pos) {
 		Light light = ((TingedLightsBlockAttachments) state.getBlock()).createLight(state, level, pos);
 		if (!type.equals(light)) return 0;
 		return ((TingedLightsBlockAttachments) state.getBlock()).getBrightness(state, level, pos);
 	}
-	
+
 	public int getSkyLightValue(BlockPos blockPos, ChunkAccess chunk) {
 		return 0;
 	}
-	
+
 	public ColoredLightInterface(LevelLightEngine lightEngine, BlockGetter level, Light type, LightChunkGetter chunkSource) {
 		super(chunkSource, false, true, lightEngine);
 		this.type = type;
 		this.level = level;
 		this.chunkSource = chunkSource;
 	}
-	
+
 	@Override
 	public BlockStarLightEngine getBlockLightEngine() {
 		if (this.cachedBlockPropagators == null) {
@@ -72,11 +72,11 @@ public class ColoredLightInterface extends DummyLightInterface implements OutOfL
 			synchronized (this.cachedBlockPropagators) {
 				ret = this.cachedBlockPropagators.pollFirst();
 			}
-			
+
 			return ret == null ? (BlockStarLightEngine) (Object) new ColoredStarlightEngine(this.world, type, chunkSource) : ret;
 		}
 	}
-	
+
 	@Override
 	public void releaseBlockLightEngine(BlockStarLightEngine engine) {
 		if (this.cachedBlockPropagators != null) {
@@ -85,21 +85,24 @@ public class ColoredLightInterface extends DummyLightInterface implements OutOfL
 			}
 		}
 	}
-	
+
 	private final Deque<Pair<CompletableFuture<Void>, Runnable>> events = new ArrayDeque<>();
-	
+
 	@Override
 	public void propagateChanges() {
 		if (!Config.GeneralOptions.threading) {
 			if (!events.isEmpty()) {
 				synchronized (events) {
 					ArrayList<Pair<CompletableFuture<Void>, Runnable>> runLater = new ArrayList<>();
-					for (int i = 0; i < Minecraft.getInstance().options.renderDistance * Minecraft.getInstance().options.renderDistance; i++) {
+					for (int i = 0; i < Minecraft.getInstance().options.renderDistance().get() * Minecraft.getInstance().options.renderDistance().get(); i++) {
 						if (events.isEmpty()) break;
-						
+
 						Pair<CompletableFuture<Void>, Runnable> event = events.pop();
-						if (event.getFirst().isCancelled()) continue;
-						
+						if (event.getFirst().isCancelled()) {
+							i--;
+							continue;
+						}
+
 						if (!event.getFirst().isDone()) runLater.add(event);
 						else event.getSecond().run();
 					}
@@ -107,10 +110,10 @@ public class ColoredLightInterface extends DummyLightInterface implements OutOfL
 				}
 			}
 		}
-		
+
 		super.propagateChanges();
 	}
-	
+
 	protected void onSectionLoaded(SectionPos pPos) {
 		BlockStarLightEngine engine = getBlockLightEngine();
 		ShortArrayList list = new ShortArrayList();
@@ -118,19 +121,18 @@ public class ColoredLightInterface extends DummyLightInterface implements OutOfL
 		engine.checkChunkEdges(chunkSource, pPos.x(), pPos.z(), list);
 		releaseBlockLightEngine(engine);
 	}
-	
+
 	@Override
 	public CompletableFuture<Void> sectionChange(SectionPos pPos, boolean newEmptyValue) {
 		CompletableFuture<Void> s = super.sectionChange(pPos, newEmptyValue);
-		
+
 		if (!newEmptyValue) {
 			synchronized (events) {
 				if (Config.GeneralOptions.threading) Threading.chunkLightLoader.addAction(() -> this.onSectionLoaded(pPos));
 				else events.add(Pair.of(s, () -> this.onSectionLoaded(pPos)));
 			}
 		}
-		
+
 		return s;
 	}
 }
-*/

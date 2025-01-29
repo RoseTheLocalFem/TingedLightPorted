@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.mixin.backend.starlight;
+package tfc.tingedlights.mixin.backend.starlight;
 
 import ca.spottedleaf.starlight.common.chunk.ExtendedChunk;
 import ca.spottedleaf.starlight.common.light.SWMRNibbleArray;
@@ -39,4 +39,3 @@ public class StarLightInterfaceMixin implements OutOfLineChunkExtensionAccessor 
 		return chunk.getBlockNibbles();
 	}
 }
-*/

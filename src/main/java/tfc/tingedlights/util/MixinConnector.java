@@ -19,12 +19,12 @@ public class MixinConnector implements IMixinConfigPlugin {
 	@Override
 	public void onLoad(String mixinPackage) {
 	}
-	
+
 	@Override
 	public String getRefMapperConfig() {
 		return null;
 	}
-	
+
 	// tests if the classloader contains a .class file for the target
 	protected static boolean testClass(String path) {
 		ClassLoader loader = MixinConnector.class.getClassLoader();
@@ -39,7 +39,7 @@ public class MixinConnector implements IMixinConfigPlugin {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 		if (mixinClassName.startsWith("tfc.tingedlights.mixin.backend.vanilla"))
@@ -48,16 +48,16 @@ public class MixinConnector implements IMixinConfigPlugin {
 			return testClass("ca.spottedleaf.starlight.mixin.common.lightengine.LevelLightEngineMixin");
 		return true;
 	}
-	
+
 	@Override
 	public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
 	}
-	
+
 	@Override
 	public List<String> getMixins() {
 		return null;
 	}
-	
+
 	protected int transformAccess(int access) {
 		int out = Modifier.PUBLIC;
 		if (Modifier.isTransient(access)) out |= Modifier.TRANSIENT;
@@ -70,10 +70,10 @@ public class MixinConnector implements IMixinConfigPlugin {
 		if (Modifier.isVolatile(access)) out |= Modifier.VOLATILE;
 		return out;
 	}
-	
+
 	@Override
 	public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-	/*	if (mixinClassName.contains("starlight")) {
+		if (mixinClassName.contains("starlight")) {
 			if (
 					mixinClassName.equals("tfc.tingedlights.mixin.backend.starlight.BlockStarLightEngineMixin") ||
 							mixinClassName.equals("tfc.tingedlights.mixin.backend.starlight.StarLightEngineMixin") ||
@@ -84,9 +84,9 @@ public class MixinConnector implements IMixinConfigPlugin {
 				for (MethodNode field : targetClass.methods) field.access = transformAccess(field.access);
 			} else if (mixinClassName.equals("tfc.tingedlights.mixin.backend.starlight.ColoredStarlightEngineMixin")) {
 				String oldSuper = targetClass.superName;
-				
+
 				targetClass.superName = "ca/spottedleaf/starlight/common/light/BlockStarLightEngine";
-				
+
 				for (MethodNode method : targetClass.methods) {
 					for (AbstractInsnNode instruction : method.instructions) {
 						if (instruction instanceof MethodInsnNode node) {
@@ -99,9 +99,9 @@ public class MixinConnector implements IMixinConfigPlugin {
 				}
 			} else if (mixinClassName.equals("tfc.tingedlights.mixin.backend.starlight.ColoredLightInterfaceMixin")) {
 				String oldSuper = targetClass.superName;
-				
+
 				targetClass.superName = "ca/spottedleaf/starlight/common/light/StarLightInterface";
-				
+
 				for (MethodNode method : targetClass.methods) {
 					for (AbstractInsnNode instruction : method.instructions) {
 						if (instruction instanceof MethodInsnNode node) {
@@ -114,10 +114,8 @@ public class MixinConnector implements IMixinConfigPlugin {
 				}
 			}
 		}
-
-	 */
 	}
-	
+
 	protected static HashMap<String, Object> values(AnnotationNode node) {
 		boolean alt = false;
 		HashMap<String, Object> out = new HashMap<>();
@@ -129,37 +127,37 @@ public class MixinConnector implements IMixinConfigPlugin {
 		}
 		return out;
 	}
-	
-//	protected static final String updateSectionStats = "m_6191_";
-//	protected static final String enableLightSources = "m_141940_";
-//protected static final String runUpdates = "m_142528_";
-	
+
+	protected static final String updateSectionStats = "m_6191_";
+	protected static final String enableLightSources = "m_9335_";
+    protected static final String runUpdates = "m_9323_";
+
 	protected static ClassNode getNode(String name) {
 		ClassLoader loader = MixinConnector.class.getClassLoader();
 		try {
 			InputStream stream = loader.getResourceAsStream(name.replace(".", "/") + ".class");
 			byte[] data = stream.readAllBytes();
 			stream.close();
-			
+
 			ClassReader reader = new ClassReader(data);
 			ClassNode node = new ClassNode();
 			reader.accept(node, ClassReader.EXPAND_FRAMES);
-			
+
 			return node;
 		} catch (Throwable err) {
 			throw new RuntimeException(err);
 		}
 	}
-	
+
 	@Override
 	public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-		/*HookPatcher patcher = HookParser.parse(getNode(mixinClassName));
+		HookPatcher patcher = HookParser.parse(getNode(mixinClassName));
 		if (patcher != null) {
 			if (patcher.canApply(targetClass)) {
 				patcher.apply(targetClass);
 			}
 		}
-		
+
 		if (
 				mixinClassName.startsWith("tfc.tingedlights.mixin.backend.starlight")
 		) {
@@ -171,7 +169,7 @@ public class MixinConnector implements IMixinConfigPlugin {
 					for (AnnotationNode invisibleAnnotation : method.visibleAnnotations) {
 						if (invisibleAnnotation.desc.equals("Lorg/spongepowered/asm/mixin/transformer/meta/MixinMerged;")) {
 							String name = values(invisibleAnnotation).get("mixin").toString();
-							
+
 							if (name.equals("tfc.tingedlights.mixin.backend.starlight.LevelLightEngineMixin")) {
 								if (method.name.contains("preUpdateSection")) updateSection = method;
 								if (method.name.contains("postEnableLights")) enableLights = method;
@@ -181,7 +179,7 @@ public class MixinConnector implements IMixinConfigPlugin {
 					}
 				}
 			}
-			
+
 			for (MethodNode method : targetClass.methods) {
 				if (method.name.equals(ASMAPI.mapMethod(MixinConnector.updateSectionStats))) {
 					InsnList list1 = new InsnList();
@@ -189,7 +187,7 @@ public class MixinConnector implements IMixinConfigPlugin {
 					list1.add(new VarInsnNode(Opcodes.ALOAD, 1));
 					list1.add(new VarInsnNode(Opcodes.ILOAD, 2));
 					list1.add(ASMAPI.buildMethodCall(targetClassName.replace(".", "/"), updateSection.name, updateSection.desc, ASMAPI.MethodType.VIRTUAL));
-					
+
 					method.instructions.insert(list1);
 				} else if (method.name.equals(ASMAPI.mapMethod(MixinConnector.enableLightSources))) {
 					InsnList list1 = new InsnList();
@@ -197,13 +195,13 @@ public class MixinConnector implements IMixinConfigPlugin {
 					list1.add(new VarInsnNode(Opcodes.ALOAD, 1));
 					list1.add(new VarInsnNode(Opcodes.ILOAD, 2));
 					list1.add(ASMAPI.buildMethodCall(targetClassName.replace(".", "/"), enableLights.name, enableLights.desc, ASMAPI.MethodType.VIRTUAL));
-					
+
 					method.instructions.insert(list1);
 				} else if (method.name.equals(ASMAPI.mapMethod(MixinConnector.runUpdates))) {
 					InsnList list1 = new InsnList();
 					list1.add(new VarInsnNode(Opcodes.ALOAD, 0));
 					list1.add(ASMAPI.buildMethodCall(targetClassName.replace(".", "/"), runUpdates.name, runUpdates.desc, ASMAPI.MethodType.VIRTUAL));
-					
+
 					method.instructions.insert(list1);
 				}
 			}
@@ -219,7 +217,5 @@ public class MixinConnector implements IMixinConfigPlugin {
 //				System.out.println("Failed to transform class " + targetClassName + " with mixin " + mixinClassName);
 //			}
 		}
-		*/
-
 	}
 }

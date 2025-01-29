@@ -1,0 +1,13 @@
+{
+  "types": {
+    "sculk_cyan": {
+      "color": [107, 231, 171]
+    }
+  },
+  "lights": {
+    "minecraft:sculk_catalyst": {
+      "type": "sculk_cyan",
+      "brightness": -1
+    }
+  }
+}

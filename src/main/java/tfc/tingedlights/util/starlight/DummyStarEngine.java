@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.util.starlight;
+package tfc.tingedlights.util.starlight;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -15,4 +15,4 @@ public class DummyStarEngine {
 	
 	public final void handleEmptySectionChanges(LightChunkGetter lightAccess, int chunkX, int chunkZ, Boolean[] emptinessChanges) {
 	}
-}*/
+}

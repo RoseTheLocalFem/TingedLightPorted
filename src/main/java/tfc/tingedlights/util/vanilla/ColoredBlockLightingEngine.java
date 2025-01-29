@@ -17,6 +17,8 @@ import tfc.tingedlights.data.access.TingedLightsBlockAttachments;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ColoredBlockLightingEngine extends BlockLightEngine {
     Light type;
@@ -26,23 +28,6 @@ public class ColoredBlockLightingEngine extends BlockLightEngine {
         super(lightChunk);
         this.type = type;
         this.level = level;
-    }
-
-    Pair<Long, LightChunk> ccache = null;
-
-    public BlockState getState(BlockPos p_285338_) {
-        long lng = ChunkPos.asLong(p_285338_);
-        LightChunk chunk;
-        Pair<Long, LightChunk> ccache = this.ccache;
-        if (ccache != null && lng == ccache.first()) {
-            chunk = ccache.right();
-        } else {
-            int i = SectionPos.blockToSectionCoord(p_285338_.getX());
-            int j = SectionPos.blockToSectionCoord(p_285338_.getZ());
-            chunk = this.getChunk(i, j);
-            this.ccache = Pair.of(lng, chunk);
-        }
-        return chunk == null ? Blocks.BEDROCK.defaultBlockState() : chunk.getBlockState(p_285338_);
     }
 
     BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
@@ -78,33 +63,38 @@ public class ColoredBlockLightingEngine extends BlockLightEngine {
         return super.runLightUpdates();
     }
 
-	@Override
-	public void updateSectionStatus(SectionPos pPos, boolean pIsEmpty) {
-		super.updateSectionStatus(pPos, pIsEmpty);
+    @Override
+    public void updateSectionStatus(SectionPos pPos, boolean pIsEmpty) {
+        super.updateSectionStatus(pPos, pIsEmpty);
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		if (!pIsEmpty) {
-			events.add(() -> {
-				for (int x = 0; x < 16; x++) {
-					for (int y = 0; y < 16; y++) {
-						for (int z = 0; z < 16; z++) {
-							if (x != 15 && y != 15 && x != 0 && y != 0 && z != 0 && z != 15)
-								z = 14;
+        if (!pIsEmpty) {
+            events.add(() -> {
+                int mpx = pPos.minBlockX();
+                int mpy = pPos.minBlockY();
+                int mpz = pPos.minBlockZ();
 
-							pos.set(pPos.minBlockX() + x, pPos.minBlockY() + y, pPos.minBlockZ() + z);
+                for (int x = 0; x < 16; x++) {
+                    for (int y = 0; y < 16; y++) {
+                        for (int z = 0; z < 16; z++) {
+                            if (x != 15 && y != 15 && x != 0 && y != 0 && z != 0 && z != 15) {
+                                z = 15;
+                            }
 
-							if (x == 0) checkNode(pos.asLong());
-							else if (x == 15) checkNode(pos.asLong());
-
-							else if (z == 0) checkNode(pos.asLong());
-							else if (z == 15) checkNode(pos.asLong());
-
-							else if (y == 0) checkNode(pos.asLong());
-							else if (y == 15) checkNode(pos.asLong());
-						}
-					}
-				}
-			});
-		}
-	}
+//                            if (x == 0 ||
+//                                    x == 15 ||
+//                                    z == 0 ||
+//                                    z == 15 ||
+//                                    y == 0 ||
+//                                    y == 15
+//                            ) {
+                                pos.set(mpx + x, mpy + y, mpz + z);
+                                checkNode(pos.asLong());
+//                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
 }

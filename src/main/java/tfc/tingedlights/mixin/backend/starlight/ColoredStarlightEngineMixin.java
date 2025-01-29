@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.mixin.backend.starlight;
+package tfc.tingedlights.mixin.backend.starlight;
 
 import org.spongepowered.asm.mixin.Mixin;
 import tfc.tingedlights.util.starlight.ColoredStarlightEngine;
@@ -7,4 +7,3 @@ import tfc.tingedlights.util.starlight.ColoredStarlightEngine;
 public class ColoredStarlightEngineMixin {
 	// dummy mixin: allows me to switch which class the colored starlight interface extends
 }
-*/

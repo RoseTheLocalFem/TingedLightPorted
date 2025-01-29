@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.util.starlight;
+package tfc.tingedlights.util.starlight;
 
 import ca.spottedleaf.starlight.common.light.SWMRNibbleArray;
 import tfc.tingedlights.api.data.Light;
@@ -17,4 +17,3 @@ public interface ColorExtendedChunk {
 	void setSkyEmptinessMap(Light light, boolean[] var1);
 	boolean[] getSkyEmptinessMap(Light light);
 }
-*/

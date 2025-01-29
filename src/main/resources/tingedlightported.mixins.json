@@ -29,7 +29,14 @@
     "render.shaders.ShaderInstanceMixin",
     "render.shaders.ShaderInstancePreprocessorMixin",
     "render.shaders.ShaderProgramMixin",
-    "render.vertex.builder.VertexBufferConsumerMixin"
+    "render.vertex.builder.VertexBufferConsumerMixin",
+    "backend.starlight.ColoredLightInterfaceMixin",
+    "backend.starlight.ColoredStarlightEngineMixin",
+    "backend.starlight.LevelLightEngineMixin",
+    "backend.starlight.StarLightEngineMixin",
+    "backend.starlight.BlockStarLightEngineMixin",
+    "backend.starlight.ChunkAccessMixin",
+    "backend.starlight.StarLightInterfaceMixin"
   ],
   "injectors": {
     "defaultRequire": 1

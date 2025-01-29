@@ -1,4 +1,4 @@
-/*package tfc.tingedlights.mixin.backend.starlight;
+package tfc.tingedlights.mixin.backend.starlight;
 
 import ca.spottedleaf.starlight.common.light.StarLightInterface;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -24,6 +24,7 @@ import tfc.tingedlights.api.data.Light;
 import tfc.tingedlights.data.Color;
 import tfc.tingedlights.data.access.ColoredLightEngine;
 import tfc.tingedlights.data.access.IHoldColoredLights;
+import tfc.tingedlights.util.starlight.ColoredLightInterface;
 import tfc.tingedlights.utils.LightInfo;
 
 import java.util.*;
@@ -196,4 +197,3 @@ public class LevelLightEngineMixin implements ColoredLightEngine {
 		}
 	}
 }
-*/
