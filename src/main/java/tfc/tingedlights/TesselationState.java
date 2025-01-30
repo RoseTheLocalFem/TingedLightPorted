@@ -10,4 +10,9 @@ public class TesselationState {
 		if (guiLighting.get()) return GUILight;
 		return defaultV;
 	}
+
+	public static Color getDefault() {
+		if (guiLighting.get()) return GUILight;
+		return null;
+	}
 }

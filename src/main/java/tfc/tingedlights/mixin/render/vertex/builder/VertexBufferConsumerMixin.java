@@ -45,7 +45,7 @@ public abstract class VertexBufferConsumerMixin implements VertexBufferConsumerE
     // TODO: fix these
     @Redirect(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;putShort(IS)V", ordinal = 2), method = "vertex")
     public void swapCrd(BufferBuilder instance, int pIndex, short pShortValue) {
-        defaultColor = TesselationState.getDefault(this.defaultColor);
+        Color defaultColor = TesselationState.getDefault(this.defaultColor);
         this.putByte(pIndex, (byte) (Mth.clamp(defaultColor.r(), 0, 1) * 255));
         this.putByte(pIndex + 1, (byte) (Mth.clamp(defaultColor.g(), 0, 1) * 255));
         this.putByte(pIndex + 2, (byte) (Mth.clamp(defaultColor.b(), 0, 1) * 255));
@@ -67,7 +67,7 @@ public abstract class VertexBufferConsumerMixin implements VertexBufferConsumerE
 
 //                this.putShort(0, (short) pU);
 //                this.putShort(2, BlockTesselator.packShort(pU, pV));
-                defaultColor = TesselationState.getDefault(this.defaultColor);
+                Color defaultColor = TesselationState.getDefault(this.defaultColor);
                 this.putByte(0, (byte) (Mth.clamp(defaultColor.r(), 0, 1) * 255));
                 this.putByte(1, (byte) (Mth.clamp(defaultColor.g(), 0, 1) * 255));
                 this.putByte(2, (byte) (Mth.clamp(defaultColor.b(), 0, 1) * 255));

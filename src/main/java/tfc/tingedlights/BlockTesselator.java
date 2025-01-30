@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraftforge.client.extensions.IForgeVertexConsumer;
 import net.minecraftforge.client.model.IQuadTransformer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -300,6 +301,8 @@ public class BlockTesselator {
 	}
 
 	public static int applyBakedLighting(int packedLight, ByteBuffer data) {
+		// TODO: actually, baked block light should become white light
+//		int bl = packedLight & 0xFFFF;
 		int sl = (packedLight >> 16) & 0xFFFF;
 		int offset = IQuadTransformer.UV2 * 4;
 		int slBaked = (data.get(offset + 1) >> 4) & 0xF;

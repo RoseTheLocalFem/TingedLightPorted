@@ -131,9 +131,8 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        url "https://cursemaven.com"
-    }
+    maven { url "https://cursemaven.com" }
+    maven { url = "https://maven.bawnorton.com/releases" }
 }
 
 dependencies {
@@ -144,9 +143,14 @@ dependencies {
     implementation fg.deobf("curse.maven:spark-361579:4738952")
     compileOnly fg.deobf("curse.maven:starlight-forge-526854:4631193")
     implementation fg.deobf("curse.maven:cc-tweaked-282001:5714507")
+    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
+    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
+    implementation(jarJar("com.github.bawnorton.mixinsquared:mixinsquared-forge:0.2.0")) {
+        jarJar.ranged(it, "[0.2.0,)")
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -36,7 +36,8 @@
     "backend.starlight.StarLightEngineMixin",
     "backend.starlight.BlockStarLightEngineMixin",
     "backend.starlight.ChunkAccessMixin",
-    "backend.starlight.StarLightInterfaceMixin"
+    "backend.starlight.StarLightInterfaceMixin",
+    "sodium.LightAttributeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
