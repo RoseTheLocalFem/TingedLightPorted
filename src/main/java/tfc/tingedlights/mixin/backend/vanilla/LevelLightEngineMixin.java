@@ -142,7 +142,7 @@ public class LevelLightEngineMixin implements ColoredLightEngine {
 	@Override
 	public void updateLight(Light light, BlockPos pos) {
 		if (enable) {
-			getEngine(light).checkBlock(pos);
+			((ColoredBlockLightingEngine) getEngine(light)).checkNode(pos.asLong());
 		}
 	}
 	

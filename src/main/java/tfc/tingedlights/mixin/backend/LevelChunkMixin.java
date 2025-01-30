@@ -76,18 +76,17 @@ public abstract class LevelChunkMixin implements IHoldColoredLights {
 
 	@Unique
 	private static void fill(LevelChunk chunk, Collection<LightInfo>[] sources) {
-		LevelChunk lvlChunk = (LevelChunk) (Object) chunk;
-		Collection<LightInfo>[] newSources = new Collection[sources.length];
+        Collection<LightInfo>[] newSources = new Collection[sources.length];
 
-		LightManager manager = ((ILightEngine) lvlChunk.getLevel().getLightEngine()).getManager();
+		LightManager manager = ((ILightEngine) chunk.getLevel().getLightEngine()).getManager();
 
-		int sectY = lvlChunk.getMinBuildHeight();
-		for (LevelChunkSection section : lvlChunk.getSections()) {
+		int sectY = chunk.getMinBuildHeight();
+		for (LevelChunkSection section : chunk.getSections()) {
 			if (section.hasOnlyAir()) {
 				sectY += 16;
 				continue;
 			}
-			int sectionY = lvlChunk.getSectionIndex(sectY);
+			int sectionY = chunk.getSectionIndex(sectY);
 
 			newSources[sectionY] = new HashSet<>();
 			if (section.hasOnlyAir()) continue;
@@ -99,24 +98,24 @@ public abstract class LevelChunkMixin implements IHoldColoredLights {
 					for (int z = 0; z < 16; z++) {
 						BlockState state = section.getBlockState(x, y, z);
 						blockPos.set(
-								x + lvlChunk.getPos().getMinBlockX(),
+								x + chunk.getPos().getMinBlockX(),
 								y + sectY,
-								z + lvlChunk.getPos().getMinBlockZ()
+								z + chunk.getPos().getMinBlockZ()
 						);
 
 						if (state.getBlock() instanceof TingedLightsBlockAttachments attachments) {
-							if (attachments.providesLight(state, lvlChunk.getLevel(), blockPos)) {
+							if (attachments.providesLight(state, chunk.getLevel(), blockPos)) {
 								// makes sure the mutable pos is still in the right spot
 								blockPos.set(
-										x + lvlChunk.getPos().getMinBlockX(),
-										y + sectY, // TODO: check?
-										z + lvlChunk.getPos().getMinBlockZ()
+										x + chunk.getPos().getMinBlockX(),
+										y + sectY,
+										z + chunk.getPos().getMinBlockZ()
 								);
 
 								BlockPos immut = blockPos.immutable();
-								Light light = attachments.createLight(state, lvlChunk.getLevel(), immut);
+								Light light = attachments.createLight(state, chunk.getLevel(), immut);
 								if (light != null) {
-									newSources[sectionY].add(new LightInfo(light, immut, (byte) attachments.getBrightness(state, lvlChunk.getLevel(), immut)));
+									newSources[sectionY].add(new LightInfo(light, immut, (byte) attachments.getBrightness(state, chunk.getLevel(), immut)));
 								}
 							}
 						}

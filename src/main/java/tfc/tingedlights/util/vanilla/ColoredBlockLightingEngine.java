@@ -1,17 +1,21 @@
 package tfc.tingedlights.util.vanilla;
 
 import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LightChunk;
 import net.minecraft.world.level.chunk.LightChunkGetter;
 import net.minecraft.world.level.lighting.BlockLightEngine;
+import net.minecraft.world.level.lighting.LightEngine;
 import tfc.tingedlights.api.data.Light;
 import tfc.tingedlights.data.access.TingedLightsBlockAttachments;
 
@@ -81,20 +85,86 @@ public class ColoredBlockLightingEngine extends BlockLightEngine {
                                 z = 15;
                             }
 
-//                            if (x == 0 ||
-//                                    x == 15 ||
-//                                    z == 0 ||
-//                                    z == 15 ||
-//                                    y == 0 ||
-//                                    y == 15
-//                            ) {
-                                pos.set(mpx + x, mpy + y, mpz + z);
-                                checkNode(pos.asLong());
-//                            }
+                            pos.set(mpx + x, mpy + y, mpz + z);
+                            checkNode(pos.asLong());
                         }
                     }
                 }
             });
+        }
+    }
+
+    @Override
+    public void checkNode(long p_285169_) {
+        long i = SectionPos.blockToSection(p_285169_);
+        DataLayer layer = this.storage.getDataLayer(
+                i, true
+        );
+        if (layer != null) {
+            BlockState blockstate = this.getState(this.pos.set(p_285169_));
+            int j = this.getEmission(p_285169_, blockstate);
+
+            if (j < 15) {
+                int px, py, pz;
+
+                int k = layer.get(
+                        px = SectionPos.sectionRelative(BlockPos.getX(p_285169_)),
+                        py = SectionPos.sectionRelative(BlockPos.getY(p_285169_)),
+                        pz = SectionPos.sectionRelative(BlockPos.getZ(p_285169_))
+                );
+                if (j < k) {
+                    layer.set(px, py, pz, 0);
+                    this.enqueueDecrease(p_285169_, LightEngine.QueueEntry.decreaseAllDirections(k));
+                } else {
+                    this.enqueueDecrease(p_285169_, PULL_LIGHT_IN_ENTRY);
+                }
+            }
+
+            if (j > 0) {
+                this.enqueueIncrease(p_285169_, LightEngine.QueueEntry.increaseLightFromEmission(j, isEmptyShape(blockstate)));
+            }
+        }
+    }
+
+    @Override
+    protected void propagateDecrease(long p_285435_, long p_285230_) {
+        int i = LightEngine.QueueEntry.getFromLevel(p_285230_);
+
+        for (Direction direction : PROPAGATION_DIRECTIONS) {
+            if (LightEngine.QueueEntry.shouldPropagateInDirection(p_285230_, direction)) {
+                long j = BlockPos.offset(p_285435_, direction);
+                DataLayer layer = this.storage.getDataLayer(
+                        SectionPos.blockToSection(j),
+                        true
+                );
+                if (layer != null) {
+                    int px, py, pz;
+
+                    int k = layer.get(
+                            px = SectionPos.sectionRelative(BlockPos.getX(j)),
+                            py = SectionPos.sectionRelative(BlockPos.getY(j)),
+                            pz = SectionPos.sectionRelative(BlockPos.getZ(j))
+                    );
+                    if (k != 0) {
+                        if (k <= i - 1) {
+                            BlockState blockstate = this.getState(this.pos.set(j));
+                            int l = this.getEmission(j, blockstate);
+                            if (l < 15) {
+                                if (k > 1 && l < k) {
+                                    layer.set(px, py, pz, 0);
+                                    this.enqueueDecrease(j, LightEngine.QueueEntry.decreaseSkipOneDirection(k, direction.getOpposite()));
+                                }
+                            }
+
+                            if (l > 0) {
+                                this.enqueueIncrease(j, LightEngine.QueueEntry.increaseLightFromEmission(l, isEmptyShape(blockstate)));
+                            }
+                        } else {
+                            this.enqueueIncrease(j, LightEngine.QueueEntry.increaseOnlyOneDirection(k, false, direction.getOpposite()));
+                        }
+                    }
+                }
+            }
         }
     }
 }
