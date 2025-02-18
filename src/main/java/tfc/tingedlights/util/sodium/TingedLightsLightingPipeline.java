@@ -65,8 +65,8 @@ public class TingedLightsLightingPipeline implements LightPipeline {
         int[] lms = new int[4];
         for (int i = 0; i < face.getColors().length; i++) {
             Color cl = face.getColors()[i];
-//            int sl = (face.getSkylight()[i] >> 16) & 0xFFFF;
-            int sl = 0;
+            int sl = (face.getSkylight()[i] >> 16) & 0xFFFF;
+//            int sl = 0;
 
             int color = ((byte)(Mth.clamp(cl.r(), 0, 1) * 255) & 0xFF)       |
                     (((byte)(Mth.clamp(cl.g(), 0, 1) * 255) & 0xFF) << 8) |
