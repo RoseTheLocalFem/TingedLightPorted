@@ -25,10 +25,10 @@ public class LightAttributeMixin {
 //            MemoryUtil.memPutByte(ptr + 1, (byte) (Mth.clamp(defaultColor.g(), 0, 1) * 255));
 //            MemoryUtil.memPutByte(ptr + 2, (byte) (Mth.clamp(defaultColor.b(), 0, 1) * 255));
 //            MemoryUtil.memPutByte(ptr + 3, (byte) (sl));
-            int color = ((byte)(Mth.clamp(defaultColor.r(), 0, 1) * 255) & 0xFF)       |
-                    (((byte)(Mth.clamp(defaultColor.g(), 0, 1) * 255) & 0xFF) << 8) |
-                    (((byte)(Mth.clamp(defaultColor.b(), 0, 1) * 255) & 0xFF) << 16)|
-                    (((byte)(sl) & 0xFF) << 24);
+            int color = ((byte) (Mth.clamp(defaultColor.r(), 0, 1) * 255) & 0xFF) |
+                    (((byte) (Mth.clamp(defaultColor.g(), 0, 1) * 255) & 0xFF) << 8) |
+                    (((byte) (Mth.clamp(defaultColor.b(), 0, 1) * 255) & 0xFF) << 16) |
+                    (((byte) (sl) & 0xFF) << 24);
 
             MemoryUtil.memPutInt(ptr, color);
         }

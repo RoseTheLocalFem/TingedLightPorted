@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "tfc.tingedlights.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "tingedlightported.refmap.json",
+  "refmap": "tingedlights.refmap.json",
   "plugin": "tfc.tingedlights.util.MixinConnector",
   "mixins": [
   ],
@@ -38,7 +38,8 @@
     "backend.starlight.ChunkAccessMixin",
     "backend.starlight.StarLightInterfaceMixin",
     "sodium.LightAttributeMixin",
-    "sodium.VertexBufferWriterMixin"
+    "sodium.VertexBufferWriterMixin",
+    "sodium.LightPipelineProviderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

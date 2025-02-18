@@ -33,8 +33,10 @@ public class ShaderInstancePreprocessorMixin {
 	
 	@Inject(at = @At("RETURN"), method = "applyImport", cancellable = true)
 	public void postApplyInput(boolean p_173374_, String p_173375_, CallbackInfoReturnable<String> cir) {
-		if (p_173375_.equals("light.glsl")) { // TODO: changed from "shaders/include/light.glsl"
-			// TODO: do this better (count curlies to figure out where methods start and stop)
+		if (p_173375_.equals("light.glsl")) {
+			// TODO: changed from "shaders/include/light.glsl"
+			// 		 check mod compat?
+			// TODO: migrate to proper shader parser
 			String str = cir.getReturnValue();
 			
 			if (str.contains("\n//#define tinged_lights\n")) {

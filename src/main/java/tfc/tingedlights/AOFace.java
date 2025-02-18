@@ -42,6 +42,10 @@ public class AOFace {
 	private static final int COUNT = 4;
 	
 	public void calculate(Direction pDirection, BlockAndTintGetter pLevel, BlockState pState, BlockPos pPos, BitSet pShapeFlags) {
+		if (pState.toString().contains("torch")) {
+			System.out.println("This is a torch!");
+		}
+
 		BlockPos blockpos = pShapeFlags.get(0) ? pPos.relative(pDirection) : pPos;
 		LightManager manager = (LightManager) pLevel.getLightEngine();
 		
@@ -294,5 +298,25 @@ public class AOFace {
 	
 	public Color[] getColors() {
 		return colors;
+	}
+
+	public BakedQuad getBakedQuad() {
+		return bakedQuad;
+	}
+
+	public float[] getpShape() {
+		return pShape;
+	}
+
+	public boolean[] getDimmed() {
+		return dimmed;
+	}
+
+	public float[] getShades() {
+		return shades;
+	}
+
+	public int[] getSkylight() {
+		return skylight;
 	}
 }

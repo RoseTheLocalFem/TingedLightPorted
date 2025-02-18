@@ -157,12 +157,12 @@ minecraft.runs.all {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-//    implementation fg.deobf("curse.maven:create-328085:5838779")
-//    implementation fg.deobf("curse.maven:copycats-968398:5725773")
+    implementation fg.deobf("curse.maven:create-328085:5838779")
+    implementation fg.deobf("curse.maven:copycats-968398:5725773")
     implementation fg.deobf("curse.maven:spark-361579:4738952")
     implementation fg.deobf("curse.maven:starlight-forge-526854:4631193")
-//    implementation fg.deobf("curse.maven:cc-tweaked-282001:5714507")
-    compileOnly fg.deobf("curse.maven:embeddium-908741:5681725")
+    implementation fg.deobf("curse.maven:cc-tweaked-282001:5714507")
+    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
