@@ -39,7 +39,8 @@
     "backend.starlight.StarLightInterfaceMixin",
     "sodium.LightAttributeMixin",
     "sodium.VertexBufferWriterMixin",
-    "sodium.LightPipelineProviderMixin"
+    "sodium.LightPipelineProviderMixin",
+    "sodium.SodiumShaderLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

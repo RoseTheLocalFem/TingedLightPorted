@@ -38,16 +38,16 @@ public class ShaderInstancePreprocessorMixin {
 			// 		 check mod compat?
 			// TODO: migrate to proper shader parser
 			String str = cir.getReturnValue();
-			
+
 			if (str.contains("\n//#define tinged_lights\n")) {
 				cir.setReturnValue(str.replaceFirst("\n//#define tinged_lights\n", "\n#define tinged_lights\n"));
 				return;
 			}
-			
+
 			int targetMethod = str.indexOf("minecraft_sample_lightmap");
 			String sub = str.substring(targetMethod);
 			targetMethod += sub.indexOf("{");
-			
+
 			String out = str.substring(0, targetMethod + 1);
 			out += "\n    #ifdef TINGEDLIGHTS_PATCHED\n" +
 					"    	 int g = (uv.x >> 8) & 0xFF;\n" +
@@ -87,7 +87,7 @@ public class ShaderInstancePreprocessorMixin {
 				if (Config.GeneralOptions.useLightmap) out += dynamicLightMapMethod;
 				else out += dynamicLightMethod;
 			}
-			
+
 			StringBuilder output = new StringBuilder();
 			boolean inserted = false;
 			for (String s : out.split("\n")) {
@@ -97,7 +97,7 @@ public class ShaderInstancePreprocessorMixin {
 					inserted = true;
 				}
 			}
-			
+
 			if (Config.GeneralOptions.dumpShaders) {
 				if (!Config.wroteLightShader) {
 					try {
@@ -115,7 +115,7 @@ public class ShaderInstancePreprocessorMixin {
 					}
 				}
 			}
-			
+
 			cir.setReturnValue(output.toString());
 		}
 	}
