@@ -37,7 +37,8 @@
     "backend.starlight.BlockStarLightEngineMixin",
     "backend.starlight.ChunkAccessMixin",
     "backend.starlight.StarLightInterfaceMixin",
-    "sodium.LightAttributeMixin"
+    "sodium.LightAttributeMixin",
+    "sodium.VertexBufferWriterMixin"
   ],
   "injectors": {
     "defaultRequire": 1

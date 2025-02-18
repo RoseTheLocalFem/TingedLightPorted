@@ -97,6 +97,11 @@ minecraft {
         client {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
+            mods {
+                modClientRun {
+                    source sourceSets.main
+                }
+            }
         }
 
         server {
@@ -133,23 +138,43 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url "https://cursemaven.com" }
     maven { url = "https://maven.bawnorton.com/releases" }
+    maven { url 'https://jitpack.io' }
+}
+
+configurations {
+    // Create the library configuration, where our non-mod libraries will be added to
+    library
+    // Any dependency in the library configuration will also be added to the implementation configuration
+    implementation.extendsFrom library
+}
+
+minecraft.runs.all {
+    lazyToken('minecraft_classpath') {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("curse.maven:create-328085:5838779")
-    implementation fg.deobf("curse.maven:copycats-968398:5725773")
+//    implementation fg.deobf("curse.maven:create-328085:5838779")
+//    implementation fg.deobf("curse.maven:copycats-968398:5725773")
     implementation fg.deobf("curse.maven:spark-361579:4738952")
-    compileOnly fg.deobf("curse.maven:starlight-forge-526854:4631193")
-    implementation fg.deobf("curse.maven:cc-tweaked-282001:5714507")
-    implementation fg.deobf("curse.maven:embeddium-908741:5681725")
+    implementation fg.deobf("curse.maven:starlight-forge-526854:4631193")
+//    implementation fg.deobf("curse.maven:cc-tweaked-282001:5714507")
+    compileOnly fg.deobf("curse.maven:embeddium-908741:5681725")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
-    implementation(jarJar("com.github.bawnorton.mixinsquared:mixinsquared-forge:0.2.0")) {
-        jarJar.ranged(it, "[0.2.0,)")
+//    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
+//    implementation(jarJar("com.github.bawnorton.mixinsquared:mixinsquared-forge:0.2.0")) {
+//        jarJar.ranged(it, "[0.2.0,)")
+//    }
+
+    library("com.github.Ocelot5836:glsl-processor:${glsl_processor_version}")
+    minecraftLibrary("com.github.Ocelot5836:glsl-processor:${glsl_processor_version}")
+    implementation(jarJar("com.github.Ocelot5836:glsl-processor:${glsl_processor_version}")) {
+        jarJar.ranged(it, "[${glsl_processor_version},]")
     }
 }
 
